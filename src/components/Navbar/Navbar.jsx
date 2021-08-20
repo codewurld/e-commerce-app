@@ -7,12 +7,13 @@ import useStyles from './styles' // use styles from styles.js
 
 const Navbar = () => {
     const classes = useStyles();
+
     return (
         <div>
             <AppBar position="fixed" className={classes.appBar} color="inherit">
                 <Toolbar>
                     <Typography variant="h6" className={classes.title} color="inherit">
-                        <img src={logo} alt="NOMADS. " height="25px" className={classes.image} />
+                        {/* <img src={logo} alt="NOMADS. " height="25px" className={classes.image} /> */}
                         NOMADS.
                     </Typography>
                     <div className={classes.grow}>
