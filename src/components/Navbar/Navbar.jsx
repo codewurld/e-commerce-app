@@ -4,7 +4,7 @@ import { ShoppingCart } from '@material-ui/icons';
 import logo from '../../assets/NOMADS_MASK.jpg'
 import useStyles from './styles' // use styles from styles.js
 
-// pass prop from App to dynamically change number of items displayed in cart
+// pass prop from App to dynamically change number of items displayed in cart - i.e. "badge content"
 
 const Navbar = ({ totalItemsSelected }) => {
     const classes = useStyles();
