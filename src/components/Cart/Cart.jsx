@@ -1,5 +1,5 @@
 import { Container, Typography, Button, Grid } from '@material-ui/core';
-import { classes } from 'istanbul-lib-coverage';
+import CartItem from './CartItem/CartItem';
 
 // class properties already created in separate styles.js
 import './styles'
@@ -24,7 +24,8 @@ const Cart = ({ cart }) => {
             <Grid container spacing={3}>
                 {cart.line_items.map((item) => (
                     <Grid item xs={12} sm={4} key={item.id}>
-                        <div>{item.name}</div>
+                        {/* display item in cart - pass component from cartItem folder */}
+                        <CartItem item={item} />
                     </Grid>
                 ))}
             </Grid>
@@ -49,7 +50,7 @@ const Cart = ({ cart }) => {
         <Container>
             {/* classes.toolbar pushes the container down so it appears under the nav bar */}
             <div className={classes.toolbar} />
-            <Typography classes={classes.title} variant="h3">Your Shopping Cart</Typography>
+            <Typography classes={classes.title} variant="h3" gutterBottom>Your Shopping Cart</Typography>
 
             {/* if cart item = 0 return empty otherwise return filled cart */}
             {!cart.line_items.length ? <EmptyCart /> : <FilledCart />}

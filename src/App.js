@@ -44,7 +44,7 @@ const App = () => {
     return (
         <div>
             <Navbar totalItemsSelected={cart.total_items} />
-            <Products products={products} onAddToCart={handleAddToCart} />
+            {/* <Products products={products} onAddToCart={handleAddToCart} /> */}
             <Cart cart={cart} />
         </div>
     );
