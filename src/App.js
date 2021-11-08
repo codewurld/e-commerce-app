@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { commerce } from './lib/commerce';
-import { Products, Navbar, Cart, } from './components';
-import NewCart from './components/Cart/NewCart'
+import { Products, Navbar, Cart, Checkout } from './components';
+
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 
@@ -26,7 +26,8 @@ const App = () => {
         setCart(await commerce.cart.retrieve());
     }
 
-    // async function to add item to cart when cart icon is clicked
+    // async function to add/substract/empty/update item to cart when cart icon is clicked using commerceJS API
+
     // function should take two items - the id of the product and quantity selected
     const handleAddToCart = async (productId, quantity) => {
         const { cart } = await commerce.cart.add(productId, quantity);
@@ -77,9 +78,11 @@ const App = () => {
                             handleUpdateCartQty={handleUpdateCartQty}
                             handleRemoveFromCart={handleRemoveFromCart}
                             handleEmptyCart={handleEmptyCart} />
+                    </Route >
+
+                    <Route exact path="/checkout">
+                        <Checkout />
                     </Route>
-
-
                 </Switch>
 
 
