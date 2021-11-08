@@ -2,13 +2,14 @@ import { Container, Typography, Button, Grid } from '@material-ui/core';
 import { classes } from 'istanbul-lib-coverage';
 
 // class properties already created in separate styles.js
+import './styles'
 
 import useStyles from './styles';
 
 const Cart = ({ cart }) => {
 
     // cart should be empty if there are zero items in the array of line_items
-    const isEmpty = !cart.line_items.length;
+    // const isEmpty = !cart.line_items.length;
 
 
     const classes = useStyles();
@@ -18,7 +19,7 @@ const Cart = ({ cart }) => {
         <Typography variant="subtitle">You have no items in your shopping cart, start adding some!</Typography>
     );
 
-    const filledCart = () => (
+    const FilledCart = () => (
         <>
             <Grid container spacing={3}>
                 {cart.line_items.map((item) => (
@@ -38,7 +39,11 @@ const Cart = ({ cart }) => {
             </div>
 
         </>
-    )
+    );
+
+    if (!cart.line_items) return 'Loading...';
+
+
 
     return (
         <Container>
@@ -46,8 +51,8 @@ const Cart = ({ cart }) => {
             <div className={classes.toolbar} />
             <Typography classes={classes.title} variant="h3">Your Shopping Cart</Typography>
 
-            {/* another form of terniary operator */}
-            {isEmpty ? <EmptyCard /> : <FilledCart />}
+            {/* if cart item = 0 return empty otherwise return filled cart */}
+            {!cart.line_items.length ? <EmptyCart /> : <FilledCart />}
         </Container>
     );
 }
