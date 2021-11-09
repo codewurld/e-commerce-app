@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from '@material-ui/core'
+
+import { commerce } from '../../../lib/commerce';
 import useStyles from './styles'
 import PaymentForm from '../PaymentForm';
 import AddressForm from '../AddressForm';
@@ -7,16 +9,43 @@ import AddressForm from '../AddressForm';
 // user steps through checkout
 const steps = ['Shipping address', 'Payment details']
 
-const Checkout = () => {
+// cart prop from Checkout component in Appjs
+const Checkout = ({ cart }) => {
+
+    // manage state for user steps in checkout process
     const [activeStep, setActiveStep] = useState(0)
+
+    // manage state for check out token
+    const [checkoutToken, setCheckoutToken] = useState(null);
     const classes = useStyles();
+
+    // checkout token passed in AddressForm component
+    // useEffect does not allow direct call of async function
+
+    useEffect(() => {
+        const generateToken = async () => {
+            try {
+                const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' });
+
+                console.log(token);
+
+                setCheckoutToken(token)
+            } catch (error) {
+
+            }
+        }
+
+        generateToken();
+    }, [cart]);
+
+
 
     const Confirmation = () => {
         <div>Confirmation</div>
     }
 
     // display form depending on current step user is on
-    const Form = () => activeStep === 0 ? <AddressForm /> : <PaymentForm />
+    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} /> : <PaymentForm />
 
     return (
         <>
@@ -37,7 +66,7 @@ const Checkout = () => {
                     </Stepper>
 
                     {/* if user completes last step of checkout, display confirmation */}
-                    {activeStep === steps.length ? <Confirmation /> : <Form />}
+                    {activeStep === steps.length ? <Confirmation /> : checkoutToken && <Form />}
                 </Paper>
             </main>
 
