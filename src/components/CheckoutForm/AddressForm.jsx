@@ -32,18 +32,43 @@ const AddressForm = ({ checkoutToken }) => {
     // call useforms
     const methods = useForm();
 
+    //  Object.entries returns keys and values of of object argument- since shippingCountries is not an array, mapping is impossible 
+    // convert object into 2d array
+    // map converted object
+    // return code and name as id and label
+    const countries = Object.entries(shippingCountries).map(([code, name]) => ({ id: code, label: name }));
+
+    const subdivisions = Object.entries(shippingSubDivisions).map(([code, name]) => ({ id: code, label: name }));
+
     // checkoutTokenId is received from when user starts order process
     const fetchDestinationCountries = async (checkoutTokenId) => {
-        const { countries } = await commerce.services.localeListShippingCountries(checkoutTokenId);
+        const { countries } = await commerce.services.localeListCountries(checkoutTokenId);
 
-        console.log(countries);
         setShippingCountries(countries);
+
+        // return array of keys in countries object
+        setShippingCountry(Object.keys(countries)[0])
+    }
+
+    // return states/counties of individual countries
+    const fetchSubdivisions = async (countryCode) => {
+        const { subdivisions } = await commerce.services.localeListSubdivisions(countryCode);
+
+        setShippingSubDivisions(subdivisions);
+        // map and return selected subdivision
+        setShippingSubDivisions(Object.keys(subdivisions)[0])
     }
 
     // fetch shipping countries when address form renders
     useEffect(() => {
         fetchDestinationCountries(checkoutToken.id)
     }, []);
+
+    // if user selects shipping country, call fetchSubdivisions function
+    useEffect(() => {
+        if (shippingCountry) fetchSubdivisions(shippingCountry)
+    }, [shippingCountry]);
+
 
     return (
         <>
@@ -57,26 +82,34 @@ const AddressForm = ({ checkoutToken }) => {
                         <CustomFormInput required name="email" label="Email" />
                         <CustomFormInput required name="city" label="City" />
                         <CustomFormInput required name="postCode" label="Postcode" />
-                        {/* <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={6}>
                             <InputLabel>Country Destination</InputLabel>
-                            <Select value={ } fullWidth onChange>
-                                <MenuItem key={ } value={ }>Select Country</MenuItem>
+                            <Select value={shippingCountry} fullWidth onChange={(e) => setShippingCountry(e.target.value)}>
+                                {/* map through converted object of countries - line 39 and return JSX */}
+                                {countries.map((country) => (
+                                    <MenuItem key={country.id} value={country.id}>{country.label}
+                                    </MenuItem>
+                                ))}
+
                             </Select>
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
                             <InputLabel>Shipping Subdivision</InputLabel>
-                            <Select value={ } fullWidth onChange>
-                                <MenuItem key={ } value={ }>Select Country</MenuItem>
+                            <Select value={shippingSubDivision} fullWidth onChange={(e) => setShippingSubDivision(e.target.value)}>
+                                {subdivisions.map((subdivision) => (
+                                    <MenuItem key={subdivision.id} value={subdivision.id}>{subdivision.label}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
                             <InputLabel>Shipping Options</InputLabel>
-                            <Select value={ } fullWidth onChange>
-                                <MenuItem key={ } value={ }>Shipping Options</MenuItem>
+                            <Select value={''} fullWidth onChange>
+                                <MenuItem key={''} value={''}>Shipping Options</MenuItem>
                             </Select>
-                        </Grid> */}
+                        </Grid>
 
                     </Grid>
                 </form>
