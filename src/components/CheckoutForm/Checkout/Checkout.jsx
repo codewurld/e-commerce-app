@@ -46,10 +46,11 @@ const Checkout = ({ cart }) => {
     const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
 
     // function passed for use in next button on AddressForm
-    const nextButton = (data) => {
+    const nextbutton = (data) => {
         setShippingData(data)
 
-        nextStep()
+        console.log("hello")
+        nextStep();
     }
 
     const Confirmation = () => {
@@ -57,7 +58,7 @@ const Checkout = ({ cart }) => {
     }
 
     // display form depending on current step user is on
-    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={nextButton} /> : <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} />
+    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={nextbutton} /> : <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} />
 
     return (
         <>
