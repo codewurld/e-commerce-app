@@ -140,14 +140,14 @@ const AddressForm = ({ checkoutToken, nextButton }) => {
                                 ))}
                             </Select>
                         </Grid>
-
                     </Grid>
+                    <br />
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Button component={Link} to="/basket" variant="outlined">Go back to basket</Button>
+                        <Button type="submit" variant="contained" color="primary">Next</Button>
+                    </div>
                 </form>
-                <br />
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Button component={Link} to="/basket" variant="outlined">Go back to basket</Button>
-                    <Button type="submit" variant="contained" color="primary">Next</Button>
-                </div>
+
             </FormProvider>
         </>
     );

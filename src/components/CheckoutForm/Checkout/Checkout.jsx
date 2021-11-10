@@ -30,8 +30,6 @@ const Checkout = ({ cart }) => {
             try {
                 const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' });
 
-
-
                 setCheckoutToken(token)
             } catch (error) {
 
@@ -59,7 +57,7 @@ const Checkout = ({ cart }) => {
     }
 
     // display form depending on current step user is on
-    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={nextButton} /> : <PaymentForm shippingData={shippingData} />
+    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={nextButton} /> : <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} />
 
     return (
         <>
