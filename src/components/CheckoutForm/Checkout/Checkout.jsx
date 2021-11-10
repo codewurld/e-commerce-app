@@ -17,6 +17,9 @@ const Checkout = ({ cart }) => {
 
     // manage state for check out token
     const [checkoutToken, setCheckoutToken] = useState(null);
+
+    const [shippingData, setShippingData] = useState({})
+
     const classes = useStyles();
 
     // checkout token passed in AddressForm component
@@ -27,7 +30,7 @@ const Checkout = ({ cart }) => {
             try {
                 const token = await commerce.checkout.generateToken(cart.id, { type: 'cart' });
 
-                console.log(token);
+
 
                 setCheckoutToken(token)
             } catch (error) {
@@ -38,14 +41,25 @@ const Checkout = ({ cart }) => {
         generateToken();
     }, [cart]);
 
+    // increment active step if use presses NextButton in AddressForm to direct to payment page
+    const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
+    // decrement active step if use presses backButton in AddressForm to direct back to address page from payment
+    const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
+
+    // function passed for use in next button on AddressForm
+    const nextButton = (data) => {
+        setShippingData(data)
+
+        nextStep()
+    }
 
     const Confirmation = () => {
         <div>Confirmation</div>
     }
 
     // display form depending on current step user is on
-    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} /> : <PaymentForm />
+    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={nextButton} /> : <PaymentForm shippingData={shippingData} />
 
     return (
         <>

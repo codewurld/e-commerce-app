@@ -3,7 +3,7 @@ import { useFormContext, Controller } from "react-hook-form";
 
 // material ui size properties - xs = display item on small device, etc.. 12 = 1 item, 6 = 2 items....
 
-const CustomFormInput = ({ name, label, required }) => {
+const CustomFormInput = ({ name, label, }) => {
 
     const { control } = useFormContext();
 
@@ -19,7 +19,7 @@ const CustomFormInput = ({ name, label, required }) => {
                 control={control}
                 label={label}
                 fullWidth
-                required={required}
+                required
 
             />
         </ Grid>

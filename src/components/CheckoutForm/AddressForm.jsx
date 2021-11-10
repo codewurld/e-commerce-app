@@ -2,6 +2,8 @@ import { InputLabel, Select, MenuItem, Button, Grid, Typography } from '@materia
 
 import { useState, useEffect } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import { useForm, FormProvider } from 'react-hook-form'
 
 // fetch functions from commerceJS API
@@ -12,7 +14,8 @@ import { commerce } from '../../lib/commerce';
 import CustomFormInput from './CustomTextField';
 
 // pass checkoutToken prop from Addressform component in Checkout.jsx
-const AddressForm = ({ checkoutToken }) => {
+// pass nextButton prop from Checkout component in Checkout.jsx
+const AddressForm = ({ checkoutToken, nextButton }) => {
     const [shippingCountries, setShippingCountries] = useState([]);
 
     // user selection
@@ -67,12 +70,14 @@ const AddressForm = ({ checkoutToken }) => {
 
     // return shipping options, i.e. domestic or international
     // user must have checkoutToken id
-    const fetchShippingOptions = async (checkoutTokenId, country, region = null) => {
-        const options = await commerce.checkout.getShippingOptions(checkoutTokenId, { country, region });
+    const fetchShippingOptions = async (checkoutTokenId, country, stateProvince = null) => {
+        const options = await commerce.checkout.getShippingOptions(checkoutTokenId, { country, region: stateProvince });
+
+        console.log(options)
 
         setShippingOptions(options);
-        setShippingOption(options[0].id)
-    }
+        // setShippingOption(options[0].id);
+    };
 
     // fetch shipping countries when address form renders
     useEffect(() => {
@@ -95,14 +100,15 @@ const AddressForm = ({ checkoutToken }) => {
         <>
             <Typography variant="h6" gutterBottom>Add shipping details</Typography>
             <FormProvider {...methods}>
-                <form onSubmit={''}>
+                {/* methods.handleSubmit is a react hook form function */}
+                <form onSubmit={methods.handleSubmit((data) => nextButton({ ...data, shippingCountry, shippingSubDivision, shippingOption }))}>
                     <Grid container spacing={3}>
-                        <CustomFormInput required name="firstName" label="First Name" />
-                        <CustomFormInput required name="lastName" label="Surname" />
-                        <CustomFormInput required name="addressFirstLine" label="Address" />
-                        <CustomFormInput required name="email" label="Email" />
-                        <CustomFormInput required name="city" label="City" />
-                        <CustomFormInput required name="postCode" label="Postcode" />
+                        <CustomFormInput name="firstName" label="First Name" />
+                        <CustomFormInput name="lastName" label="Surname" />
+                        <CustomFormInput name="addressFirstLine" label="Address" />
+                        <CustomFormInput name="email" label="Email" />
+                        <CustomFormInput name="city" label="City" />
+                        <CustomFormInput name="postCode" label="Postcode" />
                         <Grid item xs={12} sm={6}>
                             <InputLabel>Country Destination</InputLabel>
                             <Select value={shippingCountry} fullWidth onChange={(e) => setShippingCountry(e.target.value)}>
@@ -127,13 +133,21 @@ const AddressForm = ({ checkoutToken }) => {
 
                         <Grid item xs={12} sm={6}>
                             <InputLabel>Shipping Options</InputLabel>
-                            <Select value={''} fullWidth onChange>
-                                <MenuItem key={''} value={''}>Shipping Options</MenuItem>
+                            <Select value={shippingOption} fullWidth onChange={(e) => setShippingOption(e.target.value)}>
+                                {options.map((option) => (
+                                    <MenuItem key={option.id} value={option.id}>{option.label}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </Grid>
 
                     </Grid>
                 </form>
+                <br />
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Button component={Link} to="/basket" variant="outlined">Go back to basket</Button>
+                    <Button type="submit" variant="contained" color="primary">Next</Button>
+                </div>
             </FormProvider>
         </>
     );
