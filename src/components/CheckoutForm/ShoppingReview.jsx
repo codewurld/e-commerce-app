@@ -8,6 +8,7 @@ const ShoppingReview = ({ checkoutToken }) => {
         <>
             <Typography variant="h6" gutterBottom>Order Summary</Typography>
             <List disablePadding>
+                {/* return each product in basket for review from checkoutToken info */}
                 {checkoutToken.live.line_items.map((product) => (
                     <ListItem style={{ padding: '10px 0' }} key={product.name}>
                         <ListItemText primary={product.name} secondary={`Quantity: ${product.quantity}`} />

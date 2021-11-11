@@ -61,7 +61,7 @@ const Checkout = ({ cart }) => {
     }
 
     // display form depending on current step user is on
-    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={nextbtn} /> : <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} />
+    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} nextbtn={nextbtn} /> : <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} />
 
     return (
         <>
