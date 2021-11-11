@@ -15,7 +15,7 @@ import CustomFormInput from './CustomTextField';
 
 // pass checkoutToken prop from Addressform component in Checkout.jsx
 // pass nextButton prop from Checkout component in Checkout.jsx
-const AddressForm = ({ checkoutToken, nextbutton }) => {
+const AddressForm = ({ checkoutToken, nextbtn }) => {
     const [shippingCountries, setShippingCountries] = useState([]);
 
     // user selection
@@ -102,7 +102,7 @@ const AddressForm = ({ checkoutToken, nextbutton }) => {
             <FormProvider {...methods}>
                 {/* methods.handleSubmit is a react hook form function */}
                 {/* spread all data from all filled form property */}
-                <form onSubmit={methods.handleSubmit((data) => nextbutton({ ...data, shippingCountry, shippingSubDivision, shippingOption }))}>
+                <form onSubmit={methods.handleSubmit(async (data) => await nextbtn({ ...data, shippingCountry, shippingSubDivision, shippingOption }))}>
                     <Grid container spacing={3}>
                         <CustomFormInput name="firstName" label="First Name" />
                         <CustomFormInput name="lastName" label="Surname" />
