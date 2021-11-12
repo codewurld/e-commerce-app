@@ -64,7 +64,7 @@ const App = () => {
     // function to refresh basket when order is complete
 
     const refreshBasket = async () => {
-        const newBasket = await commerce.cart.empty();
+        const newBasket = await commerce.cart.refresh();
 
         setCart(newBasket);
     }
@@ -81,6 +81,7 @@ const App = () => {
 
             // refresh basket when order is complete
             refreshBasket();
+            console.log("capture checkout complete")
 
         } catch (error) {
             setErrorMessage(error.data.error.message);

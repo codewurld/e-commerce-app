@@ -22,7 +22,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
     const [shippingData, setShippingData] = useState({})
 
-    console.log(shippingData);
+  
 
     const classes = useStyles();
 
@@ -53,7 +53,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     // function passed for use in next button on AddressForm
     const nextbtn = (data) => {
         setShippingData(data);
-        console.log(data);
+        // console.log(data);
 
         nextStep();
     };
