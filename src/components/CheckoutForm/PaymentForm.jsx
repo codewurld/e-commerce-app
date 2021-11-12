@@ -12,11 +12,12 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY, true);
 
 const PaymentForm = ({ checkoutToken, backStep, shippingData, onCaptureCheckout, nextStep }) => {
 
+    console.log(shippingData);
     // finalise user order on form submit
     // event, elements and stripe as arguments
-    const handleSubmit = async (event, elements, stripe) => {
+    const handleSubmit = async (e, elements, stripe) => {
         // prevent refresh of page
-        event.preventDefault();
+        e.preventDefault();
 
         // if no element or stripe, return
         if (!stripe || !elements) {

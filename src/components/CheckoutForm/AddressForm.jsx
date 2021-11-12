@@ -78,7 +78,7 @@ const AddressForm = ({ checkoutToken, nextbtn }) => {
         console.log(options)
 
         setShippingOptions(options);
-        // setShippingOption(options[0].id);
+        setShippingOption(options[0].id);
     };
 
     // fetch shipping countries when address form renders

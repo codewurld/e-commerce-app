@@ -64,7 +64,7 @@ const App = () => {
     // function to refresh basket when order is complete
 
     const refreshBasket = async () => {
-        const newBasket = await commerce.cart.refresh();
+        const newBasket = await commerce.cart.empty();
 
         setCart(newBasket);
     }
@@ -93,7 +93,7 @@ const App = () => {
         fetchCart();
     }, []);
 
-    console.log(cart);
+    // console.log(cart);
 
     return (
         <Router>
