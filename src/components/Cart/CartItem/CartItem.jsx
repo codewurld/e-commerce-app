@@ -4,6 +4,7 @@ import { Typography, Button, Card, CardActions, CardContent, CardMedia } from '@
 // import classes
 import useStyles from './styles'
 
+// import props from Cart component
 const CartItem = ({ item, onUpdateCartQty, onRemoveFromCart }) => {
 
     const classes = useStyles();

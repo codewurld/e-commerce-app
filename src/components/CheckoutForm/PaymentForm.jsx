@@ -5,19 +5,21 @@ import { loadStripe } from "@stripe/stripe-js";
 import ShoppingReview from "./ShoppingReview";
 
 // call Stripe API
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY, true);
 
 
-const PaymentForm = ({ checkoutToken, backStep }) => {
+const PaymentForm = ({ checkoutToken, backStep, shippingData, onCaptureCheckout, nextStep }) => {
 
     // finalise user order on form submit
     // event, elements and stripe as arguments
-    const handleSubmit = (e, elements, stripe) => {
+    const handleSubmit = async (event, elements, stripe) => {
         // prevent refresh of page
-        e.preventDefault();
+        event.preventDefault();
 
         // if no element or stripe, return
-        if (!stripe || !elements) return;
+        if (!stripe || !elements) {
+            console.log("hi")
+        }
 
         const cardElement = elements.getElement(CardElement);
 
@@ -38,35 +40,48 @@ const PaymentForm = ({ checkoutToken, backStep }) => {
                     town_city: shippingData.city,
                     county_state: shippingData.shippingSubdivision,
                     postal_zip_code: shippingData.zip,
-                    country: shippingData.shippingCountry
+                    country: shippingData.shippingCountry,
+                },
+                fulfillment: { shipping_method: shippingData.shippingOption },
+                payment: {
+                    gateway: 'stripe',
+                    stripe: {
+                        payment_method_id: paymentMethod.id
+                    }
                 }
             }
-        }
 
-        return (
-            <>
-                <ShoppingReview checkoutToken={checkoutToken} />
-                <Divider />
-                <Typography variant="h6" gutterBottom style={{ margin: "20px 0" }}>Payment method</Typography>
-                <Elements stripe={stripePromise}>
-                    {/* pass elements and stripe from Stripe API as arg */}
-                    <ElementsConsumer>
-                        {({ elements, stripe }) => (
-                            <form onSubmit={(e) => handleSubmit(e, elements, stripe)}>
-                                {/* Stripe card details component */}
-                                <CardElement />
-                                <br /> <br />
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <Button variant="outlined" onClick={backStep}>Go back</Button>
-                                    {/* if no access to stripe instance, disable button */}
-                                    <Button type="submit" variant="contained" disabled={!stripe} color="primary">Pay {checkoutToken.live.subtotal.formatted_with_symbol}</Button>
-                                </div>
-                            </form>
-                        )}
-                    </ElementsConsumer>
-                </Elements>
-            </>
-        );
+            // call onCapture checkout with token id and order data as arg
+            onCaptureCheckout(checkoutToken.id, orderData)
+
+            nextStep();
+        }
     }
 
-    export default PaymentForm;
+    return (
+        <>
+            <ShoppingReview checkoutToken={checkoutToken} />
+            <Divider />
+            <Typography variant="h6" gutterBottom style={{ margin: "20px 0" }}>Payment method</Typography>
+            <Elements stripe={stripePromise}>
+                {/* pass elements and stripe from Stripe API as arg */}
+                <ElementsConsumer>
+                    {({ elements, stripe }) => (
+                        <form onSubmit={(e) => handleSubmit(e, elements, stripe)}>
+                            {/* Stripe card details component */}
+                            <CardElement />
+                            <br /> <br />
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Button variant="outlined" onClick={backStep}>Go back</Button>
+                                {/* if no access to stripe instance, disable button */}
+                                <Button type="submit" variant="contained" disabled={!stripe} color="primary">Pay {checkoutToken.live.subtotal.formatted_with_symbol}</Button>
+                            </div>
+                        </form>
+                    )}
+                </ElementsConsumer>
+            </Elements>
+        </>
+    );
+}
+
+export default PaymentForm;

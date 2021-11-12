@@ -10,7 +10,7 @@ import AddressForm from '../AddressForm';
 const steps = ['Shipping address', 'Payment details']
 
 // cart prop from Checkout component in Appjs
-const Checkout = ({ cart }) => {
+const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
     // manage state for user steps in checkout process
     const [activeStep, setActiveStep] = useState(0)
@@ -53,15 +53,12 @@ const Checkout = ({ cart }) => {
         nextStep();
     };
 
-
-
-
     const Confirmation = () => {
         <div>Confirmation</div>
     }
 
     // display form depending on current step user is on
-    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} nextbtn={nextbtn} /> : <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} backStep={backStep} />
+    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} nextbtn={nextbtn} /> : <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} backStep={backStep} onCaptureCheckout={onCaptureCheckout} nextStep={nextStep} />
 
     return (
         <>
