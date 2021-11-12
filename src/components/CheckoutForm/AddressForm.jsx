@@ -108,7 +108,7 @@ const AddressForm = ({ checkoutToken, nextbtn }) => {
                     <Grid container spacing={3}>
                         <CustomFormInput name="firstName" label="First Name" />
                         <CustomFormInput name="lastName" label="Surname" />
-                        <CustomFormInput name="addressFirstLine" label="Address" />
+                        <CustomFormInput name="address1" label="Address" />
                         <CustomFormInput name="email" label="Email" />
                         <CustomFormInput name="city" label="City" />
                         <CustomFormInput name="postCode" label="Postcode" />
