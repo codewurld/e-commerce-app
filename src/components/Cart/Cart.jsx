@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Container, Typography, Button, Grid } from '@material-ui/core';
 import CartItem from './CartItem/CartItem';
 import { Link } from 'react-router-dom';
@@ -10,9 +12,6 @@ import useStyles from './styles';
 const Cart = ({ cart, handleUpdateCartQty,
     handleRemoveFromCart,
     handleEmptyCart }) => {
-
-
-
 
     // cart should be empty if there are zero items in the array of line_items
 

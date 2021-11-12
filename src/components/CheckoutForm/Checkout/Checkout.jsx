@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useState, useEffect } from 'react';
 import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from '@material-ui/core'
 
@@ -40,7 +42,13 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     }, [cart]);
 
     // increment active step if use presses NextButton in AddressForm to direct to payment page
-    const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+    // function nextStep() {
+    //     return (
+    //         setActiveStep((prevActiveStep) => prevActiveStep + 1)
+    //     )
+    // }
+    const nextStep = () => (setActiveStep((prevActiveStep) => prevActiveStep + 1));
 
     // decrement active step if use presses backButton in AddressForm to direct back to address page from payment
     const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -53,9 +61,9 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         nextStep();
     };
 
-    const Confirmation = () => {
+    const Confirmation = () => (
         <div>Confirmation</div>
-    }
+    )
 
     // display form depending on current step user is on
     const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} nextbtn={nextbtn} /> : <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} backStep={backStep} onCaptureCheckout={onCaptureCheckout} nextStep={nextStep} />
