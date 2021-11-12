@@ -9,10 +9,11 @@ const Product = ({ product, onAddToCart }) => {
 
     const handleAddToCart = () => onAddToCart(product.id, 1);
 
+    console.log(product);
     return (
         <Card className={classes.root}>
             {/* necessary to have style with specified height for image to display in CardMedia as per docs */}
-            <CardMedia className={classes.media} style={{ height: 0, paddingTop: '56.25%' }} image={product.media.source} title={product.name} />
+            <CardMedia className={classes.media} style={{ height: 0, paddingTop: '56.25%' }} image={product.image.url} title={product.name} />
             <CardContent>
                 <div className={classes.cardContent}>
                     <Typography variant="h5" gutterBottom>
