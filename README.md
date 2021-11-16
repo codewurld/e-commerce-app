@@ -57,6 +57,13 @@ This project is an MVP E-commerce web app built for the purpose of learning Mate
 
 **App:** react, react-countdown, react-dom, react-router-dom, react-hook-form, react-scripts, materialUI, CommerceJS, Stripe 
 
+### Stretch Goals (to-do)
+
+- Add menu option
+- Add multiple pages with different product types
+- Add footer
+- Add sign up/login option
+
 ## Acknowledgments
 
 - Adrian Hajdin
