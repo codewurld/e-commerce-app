@@ -16,6 +16,7 @@ const CustomFormInput = ({ name, label, }) => {
             {/* connect react hook form with materialUI */}
             <Controller
                 as={TextField}
+                default=""
                 name={name}
                 control={control}
                 label={label}

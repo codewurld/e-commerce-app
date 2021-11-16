@@ -7,11 +7,12 @@ import { commerce } from '../../../lib/commerce';
 import useStyles from './styles'
 import PaymentForm from '../PaymentForm';
 import AddressForm from '../AddressForm';
+import { Link } from 'react-router-dom'
 
 // user steps through checkout
 const steps = ['Shipping address', 'Payment details']
 
-// cart prop from Checkout component in Appjs
+// props passed from Checkout component in Appjs
 const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
     // manage state for user steps in checkout process
@@ -22,7 +23,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
     const [shippingData, setShippingData] = useState({})
 
-  
+
 
     const classes = useStyles();
 
@@ -36,7 +37,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
                 setCheckoutToken(token)
             } catch (error) {
-
+                console.log(error)
             }
         }
 
@@ -58,9 +59,35 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         nextStep();
     };
 
-    const Confirmation = () => (
-        <div>Confirmation</div>
-    )
+    // if order successful display message with customer name and ref no
+    // else display loading spinner
+    let Confirmation = () => order.customer ? (
+        <>
+            <div>
+                <Typography variant="h5">Thanks for shopping with us, {order.customer.firstname} </Typography>
+                <Divider className={classes.divider} />
+                <Typography variant="subtitle2">Order ref: {order.customer.reference}</Typography>
+            </div>
+            <br />
+            <Button component={Link} to="/" variant="outlined" type="button">Back to Home</Button>
+        </>
+    ) : (
+        <div className={classes.spinner}>
+            <CircularProgress />
+        </div>
+    );
+
+    // if error exists display error message and option to go back home
+    if (error) {
+        Confirmation = () => (
+            <>
+                <Typography variant="h5">Error: {error}
+                </Typography>
+                <br />
+                <Button component={Link} to="/" variant="outlined" type="button">Back to Home</Button>
+            </>
+        );
+    }
 
     // display form depending on current step user is on
     const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} nextbtn={nextbtn} /> : <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} backStep={backStep} onCaptureCheckout={onCaptureCheckout} nextStep={nextStep} />
