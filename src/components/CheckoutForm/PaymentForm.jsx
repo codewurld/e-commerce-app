@@ -10,7 +10,7 @@ import ShoppingReview from "./ShoppingReview";
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY, true);
 
 
-const PaymentForm = ({ checkoutToken, backStep, shippingData, onCaptureCheckout, nextStep }) => {
+const PaymentForm = ({ checkoutToken, backStep, shippingData, onCaptureCheckout, nextStep, timeout }) => {
 
     console.log(shippingData);
     // finalise user order on form submit
@@ -56,6 +56,8 @@ const PaymentForm = ({ checkoutToken, backStep, shippingData, onCaptureCheckout,
 
             // call onCapture checkout with token id and order data as arg
             onCaptureCheckout(checkoutToken.id, orderData)
+
+
 
             nextStep();
         }

@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { useState, useEffect } from 'react';
-import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from '@material-ui/core'
+import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button, CssBaseline } from '@material-ui/core'
 
 import { commerce } from '../../../lib/commerce';
 import useStyles from './styles'
 import PaymentForm from '../PaymentForm';
 import AddressForm from '../AddressForm';
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 // user steps through checkout
 const steps = ['Shipping address', 'Payment details']
@@ -23,9 +23,12 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
     const [shippingData, setShippingData] = useState({})
 
-
+    const [isFinished, setIsFinished] = useState(false);
 
     const classes = useStyles();
+
+    // same as location or any hooks, store useHistory in variable
+    const history = useHistory();
 
     // checkout token passed in AddressForm component
     // useEffect does not allow direct call of async function
@@ -37,7 +40,8 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
                 setCheckoutToken(token)
             } catch (error) {
-                console.log(error)
+                // go back to homepage if there's error on checkout page, otherwise cart disappears after page refreshes when checkout is complete 
+                history.push('/')
             }
         }
 
@@ -59,6 +63,14 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         nextStep();
     };
 
+    // if mock user doesn't enter payment details, complete transaction after 3 seconds
+    // pass to paymentForm component 
+    // const timeout = () => {
+    //     setTimeout(() => {
+    //         setIsFinished(true);
+    //     }, 3000)
+    // }
+
     // if order successful display message with customer name and ref no
     // else display loading spinner
     let Confirmation = () => order.customer ? (
@@ -66,7 +78,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
             <div>
                 <Typography variant="h5">Thanks for shopping with us, {order.customer.firstname} </Typography>
                 <Divider className={classes.divider} />
-                <Typography variant="subtitle2">Order ref: {order.customer.reference}</Typography>
+                <Typography variant="subtitle2">Order ref: {order.customer_reference}</Typography>
             </div>
             <br />
             <Button component={Link} to="/" variant="outlined" type="button">Back to Home</Button>
@@ -94,6 +106,8 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
     return (
         <>
+            {/* CssBaseline - materialUI mobile responsiveness */}
+            <CssBaseline />
             {/* div pushes content below navbar */}
             <div className={classes.toolbar} />
             <main className={classes.layout}>
@@ -118,5 +132,18 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         </>
     );
 }
+
+// isFinished Logic for nested ternary in Confirmation component 
+// isFinished ? (
+//     <>
+//         <div>
+//             <Typography variant="h5">Thanks for shopping with us</Typography>
+//             <Divider className={classes.divider} />
+
+//         </div>
+//         <br />
+//         <Button component={Link} to="/" variant="outlined" type="button">Back to Home</Button>
+//     </>
+// ) :
 
 export default Checkout;
