@@ -8,7 +8,7 @@ const CustomFormInput = ({ name, label, }) => {
 
     const { control } = useFormContext();
 
-    const isError = false;
+    // const isError = false;
 
     return (
 

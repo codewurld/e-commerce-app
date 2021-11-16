@@ -23,12 +23,12 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
     const [shippingData, setShippingData] = useState({})
 
-    const [isFinished, setIsFinished] = useState(false);
+    // const [isFinished, setIsFinished] = useState(false);
 
     const classes = useStyles();
 
     // same as location or any hooks, store useHistory in variable
-    const history = useHistory();
+    // const history = useHistory();
 
     // checkout token passed in AddressForm component
     // useEffect does not allow direct call of async function
@@ -41,7 +41,8 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
                 setCheckoutToken(token)
             } catch (error) {
                 // go back to homepage if there's error on checkout page, otherwise cart disappears after page refreshes when checkout is complete 
-                history.push('/')
+                // history.push('/')
+                console.log("this is an error")
             }
         }
 
